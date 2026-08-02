@@ -275,7 +275,7 @@ if ($manifestContent -match 'HostingType="FERemote"') {
 $aadBeAppXml = @"
         <AADBEApp>
           <AppId>{{BACKEND_APPID}}</AppId>
-          <RedirectUri>http://localhost:60006/close</RedirectUri>
+          <RedirectUri>{{FRONTEND_REDIRECT_URI}}</RedirectUri>
           <ResourceId>{{BACKEND_AUDIENCE}}</ResourceId>
         </AADBEApp>
 "@
