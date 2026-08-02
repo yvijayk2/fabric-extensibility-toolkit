@@ -27,6 +27,15 @@ Get-Content $envFile | ForEach-Object {
 
 Write-Host "Loaded environment variables from $envFile ($Environment environment)"
 
+# Redirect URI for the AADBEApp: {FRONTEND_URL}/close (HTTPS is required for non dev environments).
+# Derive it from FRONTEND_URL when it is not explicitly configured in the .env file.
+if (-not $envVars.ContainsKey('FRONTEND_REDIRECT_URI') -or [string]::IsNullOrWhiteSpace($envVars['FRONTEND_REDIRECT_URI'])) {
+    if ($envVars.ContainsKey('FRONTEND_URL') -and -not [string]::IsNullOrWhiteSpace($envVars['FRONTEND_URL'])) {
+        $envVars['FRONTEND_REDIRECT_URI'] = "$($envVars['FRONTEND_URL'].TrimEnd('/'))/close"
+        Write-Host "Derived FRONTEND_REDIRECT_URI from FRONTEND_URL: $($envVars['FRONTEND_REDIRECT_URI'])"
+    }
+}
+
 ################################################
 # Copy template files to temp directory and replace variables
 ################################################
